@@ -32,6 +32,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUiType
 from jarvisui import Ui_MainWindow
 
+
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice',voices[0].id)
@@ -116,6 +117,7 @@ class MainThread(QThread):
         wishMe()
         while True:
             self.query = self.takeCommand().lower()
+            
 
             if 'wikipedia' in self.query: #for searching anything on youtube
                 speak("Searching Wikipedia...")
@@ -128,19 +130,8 @@ class MainThread(QThread):
             elif 'open command prompt' in self.query:
                 os.system('start cmd')
 
-            elif 'open camera' in self.query:
-                cap = cv2.VideoCapture(0)
-                while True:
-                    ret, img = cap.read()
-                    cv2.imshow('webcam', img)
-                    k = cv2.waitKey(50)
-                    if k==27:
-                        break
-                cap.release()
-                cv2.destroyAllWindows()
-
             elif 'open youtube' in self.query: #for opening any site
-                webbrowser.open("youtube.com")
+                webbrowser.open("https://youtube.com", new=0, autoraise=True)
 
             elif 'who are you' in self.query:
                 speak("I am Jarvis")
@@ -149,7 +140,7 @@ class MainThread(QThread):
             elif 'open google' in self.query: 
                 speak("Sir, What should I search on google?")
                 cm = self.takeCommand().lower()
-                webbrowser.open(f"{cm}")
+                webbrowser.open("https://google.com//search?q="+f"{cm}")
 
             elif 'send message' in self.query:
                 speak("Whom should I send the message sir?")
@@ -175,7 +166,7 @@ class MainThread(QThread):
                 speak(f"Sir the time is {strTime}") 
     
             elif 'open prime video' in self.query:
-                webbrowser.open("primevideo.com")
+                webbrowser.open("https://primevideo.com")
 
             elif 'thank you' in self.query:
                 speak("You're most welcome sir!")
@@ -236,7 +227,6 @@ class MainThread(QThread):
                     print(exe)
                     speak("Sorry sir I was not able to convert that text")
 
-
             elif 'internet speed' in self.query:
                 speak(f"Download speed is {st.download()} bytes/s")
                 print("Download speed is" ,{st.download()} ,"bytes/s")
@@ -248,10 +238,6 @@ class MainThread(QThread):
                 user_name = input("User Name: ")
                 app.download_profile(user_name, profile_pic_only=True)
                 speak("Sir profile picture is saved in the same folder")
-
-            #elif 'take screenshot' in query:
-            #   mySS = pyautogui.screenshot()
-            #  mySS.save(r'')
 
             elif 'read pdf' in self.query:
                 pdf_reader()
