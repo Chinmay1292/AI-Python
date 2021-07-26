@@ -31,7 +31,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUiType
 from jarvisui import Ui_MainWindow
-
+import numpy as np
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -238,6 +238,10 @@ class MainThread(QThread):
                 user_name = input("User Name: ")
                 app.download_profile(user_name, profile_pic_only=True)
                 speak("Sir profile picture is saved in the same folder")
+
+            elif 'take screenshot' in self.query:
+                mySS = pyautogui.screenshot()
+                mySS.save("ss.png")
 
             elif 'read pdf' in self.query:
                 pdf_reader()
