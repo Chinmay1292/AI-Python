@@ -32,12 +32,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUiType
 from jarvisui import Ui_MainWindow
 import numpy as np
+import operator
+from bs4 import BeautifulSoup
+from pywikihow import search_wikihow
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice',voices[0].id)
 
-st = Speedtest()
+#st = Speedtest()
 app = instaloader.Instaloader()
 
 def speak(audio):
@@ -243,8 +246,52 @@ class MainThread(QThread):
                 mySS = pyautogui.screenshot()
                 mySS.save("ss.png")
 
+            elif 'calculate' in self.query:
+                r = sr.Recognizer()
+                with sr.Microphone() as source:
+                    speak("Say what you want to calculate, example 2 plus 2")
+                    print("Listening...")
+                    r.adjust_for_ambient_noise(source)
+                    audio = r.listen(source)
+                my_string = r.recognize_google(audio)
+                print(my_string)
+                def get_operator_fn(op):
+                    return{
+                        '+': operator.add, 
+                        '-': operator.sub,
+                        'x': operator.mul,
+                        'divided': operator.__truediv__,
+                    }[op]
+                def eval_binary_expr(op1, oper, op2):
+                    op1, op2 = int(op1), int(op2)
+                    return get_operator_fn(oper)(op1, op2)
+                speak("your result is")
+                print(eval_binary_expr(*(my_string.split())))
+                speak(eval_binary_expr(*(my_string.split())))
+
             elif 'read pdf' in self.query:
                 pdf_reader()
+
+            elif "temperature" in self.query:
+                speak("Enter your city name")
+                inp = input("Enter your city: ")
+                search = f"temperature in {inp}"
+                ur = f"https://google.com/search?q={search}"
+                r = requests.get(ur)
+                data = BeautifulSoup(r.text,"html.parser")
+                temp = data.find("div", class_="BNeawe").text
+                speak(f"Current {search} is {temp}")
+
+            elif "activate how to do mod" in self.query:
+                speak("how to do mode is activated please tell me what you want to know")
+                how = self.takeCommand().lower()
+                max_result = 1
+                how_to = search_wikihow(how, max_result)
+                assert len(how_to)==1
+                how_to[0].print()
+                speak(how_to[0].summary)
+
+
 
             elif 'stop listening' in self.query:
                 speak("Thanks for using me sir. Have a good day.")
