@@ -40,7 +40,7 @@ engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice',voices[0].id)
 
-#st = Speedtest()
+
 app = instaloader.Instaloader()
 
 def speak(audio):
@@ -214,12 +214,6 @@ class MainThread(QThread):
             elif 'sleep' in self.query:
                 os.system("rundll32.exe powrproof.dll,SetSuspendState 0,1,0")
 
-            elif 'switch the window' in self.query:
-                pyautogui.keyDown("alt")
-                pyautogui.press("tab")
-                time.sleep(1)
-                pyautogui.keyUp("alt")
-
             elif 'convert text to handwriting' in self.query:
                 speak("Please input the text sir")
                 txt = input("Enter your text here: ")
@@ -231,10 +225,15 @@ class MainThread(QThread):
                     speak("Sorry sir I was not able to convert that text")
 
             elif 'internet speed' in self.query:
-                speak(f"Download speed is {st.download()} bytes/s")
-                print("Download speed is" ,{st.download()} ,"bytes/s")
-                speak(f"Upload speed is {st.upload()} bytes/s")
-                print("Upload speed is" ,{st.upload()} ,"bytes/s")
+                st = Speedtest()
+                download = st.download()
+                upload = st.upload()
+                download_speed = round(download / (10**6), 2)
+                upload_speed = round(upload / (10**6), 2)
+                speak(f"Download speed is {download_speed} mb per second")
+                print("Download speed is" ,{download_speed} ,"mb/s")
+                speak(f"Upload speed is {upload_speed} mb per second")
+                print("Upload speed is" ,{upload_speed} ,"mb/s")
 
             elif 'profile picture' in self.query:
                 speak("Sir please input the user name")
@@ -291,10 +290,14 @@ class MainThread(QThread):
                 how_to[0].print()
                 speak(how_to[0].summary)
 
+            elif "are you listening" in self.query:
+                speak("Yes sir")
 
+            elif "what else can you do" in self.query or "What can you do" in self.query:
+                speak("I can google, open youtube, search wikipedia, share news, operate whatsapp, guess temperature, tell jokes and many more things")
 
             elif 'stop listening' in self.query:
-                speak("Thanks for using me sir. Have a good day.")
+                speak("Sure sir. Have a good day.")
                 sys.exit()
 
 startExecution = MainThread()
