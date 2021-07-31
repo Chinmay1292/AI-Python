@@ -35,10 +35,12 @@ import numpy as np
 import operator
 from bs4 import BeautifulSoup
 from pywikihow import search_wikihow
+import MyAlarm
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voice',voices[0].id)
+#print(voices)
+engine.setProperty('voice',voices[1].id)
 
 
 app = instaloader.Instaloader()
@@ -72,7 +74,7 @@ def news():
     main_page = requests.get(main_url).json()
     articles = main_page["articles"]
     head=[]
-    day = ["first"]
+    day = ["first", "second", "third", "fourth", "fifth"]
     for ar in articles:
         head.append(ar["title"])
     for i in range (len(day)):
@@ -140,10 +142,26 @@ class MainThread(QThread):
                 speak("I am Jarvis")
                 print("I am Jarvis")
 
+            elif 'open camera' in self.query:
+                cap = cv2.VideoCapture(0)
+                while True:
+                    ret, img = cap.read()
+                    cv2.imshow('webcam', img)
+                    k = cv2.waitKey(50)
+                    if k == 27:
+                        break;
+                cap.release()
+                cap.destryoAllWindows() 
+
             elif 'open google' in self.query: 
                 speak("Sir, What should I search on google?")
                 cm = self.takeCommand().lower()
                 webbrowser.open("https://google.com//search?q="+f"{cm}")
+
+            elif 'search on youtube' in self.query: 
+                speak("Sir, What should I search on youtube?")
+                cm = self.takeCommand().lower()
+                webbrowser.open("https://youtube.com//search?q="+f"{cm}")
 
             elif 'send message' in self.query:
                 speak("Whom should I send the message sir?")
@@ -197,16 +215,33 @@ class MainThread(QThread):
                     speak("Sorry sir I was not able to send the email.")
 
             elif 'set alarm' in self.query:
-                nn = int(datetime.datetime.now().hour)
-                if nn==22:
-                    music_dir = 'D:\\Fav'
-                    songs = os.listdir(music_dir)
-                    os.startfile(os.path.join(music_dir, songs[3]))
+                speak("Sir please tell me the time to set alarm. for example, set alarm to 17:45 pm")
+                tt = self.takeCommand().lower()
+                tt = tt.replace("set alarm to ", "")
+                tt = tt.replace(".","")
+                tt = tt.upper()
+                MyAlarm.alarm(tt) 
+
+            elif 'volume up' in self.query:
+                pyautogui.press("volumeup")
+
+            elif 'volume down' in self.query:
+                pyautogui.press("volumedown")
+
+            elif 'mute' in self.query or 'mute volume' in self.query:
+                pyautogui.press("volumemute")
+
 
             elif 'tell me a joke' in self.query:
                 joke = pyjokes.get_joke()
                 speak(joke)
                 print(joke)
+
+            elif 'bad joke' in self.query:
+                speak("Sorry to hear that sir. I will try another.")
+                jok = pyjokes.get_joke()
+                speak(jok)
+                print(jok)
 
             elif 'shut down' in self.query:
                 os.system("shutdown /s /t 5")
@@ -293,7 +328,7 @@ class MainThread(QThread):
             elif "are you listening" in self.query:
                 speak("Yes sir")
 
-            elif "what else can you do" in self.query or "What can you do" in self.query:
+            elif "what else can you do" in self.query or "what can you do" in self.query:
                 speak("I can google, open youtube, search wikipedia, share news, operate whatsapp, guess temperature, tell jokes and many more things")
 
             elif 'stop listening' in self.query:
