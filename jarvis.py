@@ -243,6 +243,14 @@ class MainThread(QThread):
                 speak(jok)
                 print(jok)
 
+            elif 'satellite' in self.query:
+                speak("Which satellite you want to see sir say random if not any specific")
+                sat = self.takeCommand().lower()
+                if sat == "random":
+                    webbrowser.open("http://stuffin.space")
+                else:
+                    webbrowser.open("http://stuffin.space/?search="+f"{sat}")
+
             elif 'shut down' in self.query:
                 os.system("shutdown /s /t 5")
 
@@ -294,7 +302,7 @@ class MainThread(QThread):
                         '+': operator.add, 
                         '-': operator.sub,
                         'x': operator.mul,
-                        'divided': operator.__truediv__,
+                        'divided by': operator.__truediv__,
                     }[op]
                 def eval_binary_expr(op1, oper, op2):
                     op1, op2 = int(op1), int(op2)
@@ -325,7 +333,7 @@ class MainThread(QThread):
                 how_to[0].print()
                 speak(how_to[0].summary)
 
-            elif "are you listening" in self.query:
+            elif "are you listening" in self.query or 'jarvis' in self.query or 'are you still listening' in self.query:
                 speak("Yes sir")
 
             elif "what else can you do" in self.query or "what can you do" in self.query:
