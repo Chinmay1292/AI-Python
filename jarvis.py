@@ -21,7 +21,7 @@ import pywhatkit as pwk
 from speedtest import Speedtest
 import instaloader
 import random 
-#import platform
+#import platformg
 import PyPDF2
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QTime, QDate, Qt
@@ -74,7 +74,7 @@ def news():
     main_page = requests.get(main_url).json()
     articles = main_page["articles"]
     head=[]
-    day = ["first", "second", "third", "fourth", "fifth"]
+    day = ["first", "second"]
     for ar in articles:
         head.append(ar["title"])
     for i in range (len(day)):
@@ -163,7 +163,7 @@ class MainThread(QThread):
                 cm = self.takeCommand().lower()
                 webbrowser.open("https://youtube.com//search?q="+f"{cm}")
 
-            elif 'send message' in self.query:
+            elif 'send whatsapp message' in self.query:
                 speak("Whom should I send the message sir?")
                 ab = int(input("Please Enter Number: "))
                 speak("What message should be sent sir?")
@@ -189,7 +189,7 @@ class MainThread(QThread):
             elif 'open prime video' in self.query:
                 webbrowser.open("https://primevideo.com")
 
-            elif 'thank you' in self.query:
+            elif 'thanks' in self.query:
                 speak("You're most welcome sir!")
                 print("You're most welcome sir!")
 
@@ -244,7 +244,7 @@ class MainThread(QThread):
                 print(jok)
 
             elif 'satellite' in self.query:
-                speak("Which satellite you want to see sir say random if not any specific")
+                speak("Which satellite you want to see sir, say random if not any specific") 
                 sat = self.takeCommand().lower()
                 if sat == "random":
                     webbrowser.open("http://stuffin.space")
@@ -291,7 +291,7 @@ class MainThread(QThread):
             elif 'calculate' in self.query:
                 r = sr.Recognizer()
                 with sr.Microphone() as source:
-                    speak("Say what you want to calculate, example 2 plus 2")
+                    speak("sure sir, Say what you want to calculate")
                     print("Listening...")
                     r.adjust_for_ambient_noise(source)
                     audio = r.listen(source)
@@ -315,8 +315,8 @@ class MainThread(QThread):
                 pdf_reader()
 
             elif "temperature" in self.query:
-                speak("Enter your city name")
-                inp = input("Enter your city: ")
+                #speak("please tell your city name")
+                inp = "kolhapur"
                 search = f"temperature in {inp}"
                 ur = f"https://google.com/search?q={search}"
                 r = requests.get(ur)
@@ -333,11 +333,11 @@ class MainThread(QThread):
                 how_to[0].print()
                 speak(how_to[0].summary)
 
-            elif "are you listening" in self.query or 'jarvis' in self.query or 'are you still listening' in self.query:
+            elif "are you listening" in self.query or 'are you still listening' in self.query:
                 speak("Yes sir")
 
             elif "what else can you do" in self.query or "what can you do" in self.query:
-                speak("I can google, open youtube, search wikipedia, share news, operate whatsapp, guess temperature, tell jokes and many more things")
+                speak("I can show satellites, google, open youtube, search wikipedia, share news, operate whatsapp, tell jokes and many more things")
 
             elif 'stop listening' in self.query:
                 speak("Sure sir. Have a good day.")
