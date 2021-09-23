@@ -8,3 +8,4 @@ IF any further issues in the code, you can directly contact me on Twitter (link 
 
 ### 🥇[Click here](https://youtu.be/FKiOBgHeqQE) to view 1st part of Video
 ### 🥈[Click here](https://youtu.be/2vcvCe_9_cM) to view 2nd part of Video
+### 💻[Follow me](https://instagram.com/technolord.epg?utm_medium=copy_link) on Instagram for amazing Python Reels!
