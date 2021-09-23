@@ -6,4 +6,5 @@ You first need to import all required modules given in the programme by using # 
 For the GRaphic User Interface of J.A.R.V.I.S. you can use QT Designer. For adding the GUI in the programme I suggest to take a look at some online sources.
 IF any further issues in the code, you can directly contact me on Twitter (link provided in Bio) or Instagram (technolord.epg) 
 
-
+### 🥇[Click here](https://youtu.be/FKiOBgHeqQE) to view 1st part of Video
+### 🥈[Click here](https://youtu.be/2vcvCe_9_cM) to view 2nd part of Video
